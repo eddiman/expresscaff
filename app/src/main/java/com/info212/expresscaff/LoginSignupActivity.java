@@ -6,9 +6,13 @@ package com.info212.expresscaff;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,9 +20,8 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
-public class LoginSignupActivity extends Activity {
+public class LoginSignupActivity extends AppCompatActivity {
     // Declare Variables
     Button loginbutton;
     Button signup;
@@ -26,12 +29,25 @@ public class LoginSignupActivity extends Activity {
     String passwordtxt;
     EditText password;
     EditText username;
+    Toolbar mToolbar;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get the view from main.xml
-        setContentView(R.layout.loginsignup);
+        setContentView(R.layout.activity_loginsignup);
+
+        //Disse to må være med i hver eneste activty som inflates,
+        //setter at activitien setter en custom toolbar
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mToolbar);
+        //setter fargen til statusbaren, er en bug som gjør at det @color/myPrimaryDarkColor ikke funker
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
+        }
+        ////////////////////////////////////////////////////////////////////////////////////////
+
         // Locate EditTexts in main.xml
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);

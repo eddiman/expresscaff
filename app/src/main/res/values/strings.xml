@@ -10,11 +10,20 @@
     <string name="SignupBtn">Sign Up</string>
     <string name="LogoutBtn">Log Out</string>
     <string name="Welcome">Welcome!</string>
-    <string name="Phone">Phone number</string>
 
+    <string name="Address">Address</string>
+    <string name="Postal">Postal code</string>
+    <string name="Phone">Phone number</string>
+    <string name="card_info">Card number</string>
+    <string-array name="card_type">
+        <item>VISA</item>
+        <item>MasterCard</item>
+        <item>Diners</item>
+    </string-array>
+    <string name="card_CVC">CVC</string>
 
     <string name="title_activity_signup">Sign up</string>
-    <string name="title_activity_shop">Choose your order</string>
+    <string name="title_activity_shop">Choose your coffee shop</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
     <string name="title_activity_main2">MAIWSNDFSAFGDS</string>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_signup" tools:context="com.info212.expresscaff.SignupActivity"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar"
+    android:layout_marginTop="60dp">
+
+
+    <!-- For aa forhindre at textviewene aktiverer på activity start-->
+    <LinearLayout
+        android:focusable="true" android:focusableInTouchMode="true"
+        android:layout_width="0px" android:layout_height="0px"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shadow_linear"
+        android:elevation="2dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/linearLayout_signup"
+                    android:layout_marginEnd="15dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/contact_icon"
+                        android:background="@drawable/contact_icon"
+
+                        />
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/home_icon"
+                        android:background="@drawable/home_icon"
+                        android:layout_marginTop="145dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/payment_icon"
+                        android:background="@drawable/payment_icon"
+                        android:layout_marginTop="100dp"
+                        />
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/phone_icon"
+                        android:background="@drawable/phone_icon"
+                        android:layout_marginTop="130dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/linearLayout_signup"
+
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/linearLayout"
+                    android:weightSum="1"
+                    android:layout_marginEnd="40dp" >
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpUsername"
+                        android:hint="@string/Username"
+                        android:inputType="text"
+                        />
+
+
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpPassword"
+                        android:hint="@string/Password"
+                        android:inputType="textPassword"
+                        />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpEmail"
+                        android:hint="@string/Email"
+                        android:inputType="textEmailAddress"
+                        />
+
+                    <EditText
+                        android:layout_marginTop="50dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpAddress"
+                        android:hint="@string/Address"
+                        android:inputType="text"
+                        />
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpPostal"
+                        android:hint="@string/Postal"
+                        android:layout_gravity="left"
+                        android:inputType="number"
+                        />
+
+                    <Spinner
+                        android:layout_marginTop="50dp"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/signUpCardType"
+                        android:layout_gravity="start"
+                        android:drawSelectorOnTop="true"
+                        android:entries="@array/card_type"
+                        />
+
+                    <EditText
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpCardNumber"
+                        android:hint="@string/card_info"
+                        android:inputType="number"
+                        />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <EditText
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/signUpCardDateMonth"
+                            android:layout_gravity="start"
+                            android:hint="Month"
+
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"
+                            android:layout_marginStart="10dp"
+                            android:textSize="24sp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@+id/signUpCardDateMonth" />
+
+                        <EditText
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/signUpCardDateYear"
+                            android:layout_gravity="start"
+                            android:hint="Year"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/signUpCardDateMonth"
+                            android:layout_marginStart="33dp"
+                            />
+
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpCardCVC"
+                        android:hint="@string/card_CVC"
+                        android:inputType="number"
+                        android:layout_gravity="start"
+                        />
+                    <EditText
+                        android:layout_marginTop="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpPhone"
+                        android:hint="@string/Phone"
+                        android:inputType="number"
+                        />
+
+                    <Button
+                        android:layout_marginTop="20dp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/SignupBtn"
+                        android:id="@+id/confirmSignUp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/button_round"
+                        android:textColor="#fff"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>
