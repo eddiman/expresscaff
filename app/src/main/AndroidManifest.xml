@@ -34,10 +34,12 @@
         <activity
             android:name=".ShopActivity"
             android:label="@string/title_activity_shop" >
-
-
         </activity>
-
+        <activity
+            android:name=".ForgottenActivity"
+            android:label="@string/title_activity_forgotten"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

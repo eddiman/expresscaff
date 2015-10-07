@@ -82,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
         //Setter en backknapp oppe til venstre, kun grafikk se nederst for tilhørende kode
         //forresten; ignorer warningen i android studio
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+///////////////////////////////////////////////////////////////////////
 
         signupUsername = (EditText) findViewById(R.id.signUpUsername);
         signupPassword = (EditText) findViewById(R.id.signUpPassword);

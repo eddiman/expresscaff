@@ -25,6 +25,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     // Declare Variables
     Button loginbutton;
     Button signup;
+    Button forgottenButton;
     String usernametxt;
     String passwordtxt;
     EditText password;
@@ -55,6 +56,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         // Locate Buttons in main.xml
         loginbutton = (Button) findViewById(R.id.login);
         signup = (Button) findViewById(R.id.signup);
+        forgottenButton = (Button) findViewById(R.id.forgotten);
 
         // Login Button Click Listener
         loginbutton.setOnClickListener(new OnClickListener() {
@@ -99,5 +101,18 @@ public class LoginSignupActivity extends AppCompatActivity {
             }
         });
 
+        forgottenButton.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View arg0) {
+                Intent intent = new Intent(LoginSignupActivity.this, ForgottenActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
     }
+
+
+
 }

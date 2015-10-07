@@ -11,6 +11,8 @@
     <string name="LogoutBtn">Log Out</string>
     <string name="Welcome">Welcome!</string>
 
+    <string name="forgottenText">Enter the email you registered with:</string>
+
     <string name="Address">Address</string>
     <string name="Postal">Postal code</string>
     <string name="Phone">Phone number</string>
@@ -22,6 +24,10 @@
     </string-array>
     <string name="card_CVC">CVC</string>
 
+    <string name="ForgottenBtn">Forgotten password</string>
+
+
+
     <string name="title_activity_signup">Sign up</string>
     <string name="title_activity_shop">Choose your coffee shop</string>
     <string name="drawer_open">Menu opened</string>
@@ -29,5 +35,6 @@
     <string name="title_activity_main2">MAIWSNDFSAFGDS</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_forgotten">ForgottenActivity</string>
 
 </resources>
