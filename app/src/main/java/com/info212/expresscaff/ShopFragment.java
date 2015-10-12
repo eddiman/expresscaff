@@ -1,17 +1,33 @@
 package com.info212.expresscaff;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 
 /**
@@ -28,6 +44,8 @@ public class ShopFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final String TAG = "main";
+    MapView mapView;
+    GoogleMap map;
 
 
     // TODO: Rename and change types of parameters
@@ -71,7 +89,40 @@ public class ShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop, container, false);
+        View v = inflater.inflate(R.layout.fragment_shop, container, false);
+
+
+
+        // Gets the MapView from the XML layout and creates it
+        mapView = (MapView) v.findViewById(R.id.mapview);
+        mapView.onCreate(savedInstanceState);
+
+        // Gets to GoogleMap from the MapView and does initialization stuff
+        map = mapView.getMap();
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+        map.setMyLocationEnabled(true);
+
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        /*try {
+            MapsInitializer.initialize(this.getActivity());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }*/
+
+        // Updates the location and zoom of the MapView
+
+
+        return v;
+
+
+    }
+
+
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -94,6 +145,11 @@ public class ShopFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ///////////////////////MAPFRAGMENT//////////////////////////////////
+
+
+        /////////////////////////////////////////////////////////
+        //Button MapButton = (Button) getActivity().findViewById(R.id.MapTestbutton);
 
         TextView phone = (TextView) getActivity().findViewById(R.id.phoneNumber);
 
@@ -102,6 +158,16 @@ public class ShopFragment extends Fragment {
 
         phone.setText("phone number is " + strPhone);
 
+        LatLng auraPos = new LatLng(60.391910, 5.330737);
+        LatLng waynePos = new LatLng(60.393047, 5.326703);
+
+        map.addMarker(new MarkerOptions()
+                .position(auraPos)
+                .title("Cafè Aura"));
+
+        map.addMarker(new MarkerOptions()
+                .position(waynePos)
+                .title("Wayne's Coffe \n Chica, Småstrandgaten 3, 5014 Bergen"));
 
 
     }

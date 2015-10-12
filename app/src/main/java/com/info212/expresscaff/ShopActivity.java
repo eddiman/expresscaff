@@ -1,21 +1,21 @@
 package com.info212.expresscaff;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.parse.ParseUser;
 
 
-public class ShopActivity extends ActionBarActivity
+public class ShopActivity extends AppCompatActivity
         implements NavigationDrawerCallbacks, ShopFragment.OnFragmentInteractionListener {
 
     /**
@@ -31,12 +31,13 @@ public class ShopActivity extends ActionBarActivity
     ParseUser currentUser = ParseUser.getCurrentUser();
     String struser = currentUser.getUsername();
     String stremail = currentUser.getEmail();
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
+
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
