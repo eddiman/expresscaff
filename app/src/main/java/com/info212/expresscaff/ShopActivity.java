@@ -10,10 +10,13 @@ import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 
@@ -54,6 +57,12 @@ public class ShopActivity extends AppCompatActivity
         // populate the navigation drawer
         mNavigationDrawerFragment.setUserData(struser, stremail, BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
     }
+
+
+
+
+
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {

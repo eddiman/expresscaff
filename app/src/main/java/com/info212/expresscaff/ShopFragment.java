@@ -11,6 +11,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
@@ -19,7 +20,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +70,11 @@ public class ShopFragment extends Fragment {
     String markerTitle;
     String shopAddress;
     int shopPhone;
+    ListView shopview;
+    List<ParseObject> ob;
+    ArrayAdapter<String> adapter;
+
+
 
 
 
@@ -168,15 +177,15 @@ public class ShopFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         createMarkers();
-        //    Button MapButton = (Button) getActivity().findViewById(R.id.MapTestbutton);
+        setMapCamera();
+        new RemoteDataTask().execute();
 
+/*
         TextView phone = (TextView) getActivity().findViewById(R.id.phoneNumber);
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         String strPhone = currentUser.getString("phone");
-
         phone.setText("phone number is " + strPhone);
-
+*/
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -191,6 +200,8 @@ public class ShopFragment extends Fragment {
 
 
     }
+
+
 
     public void createMarkers() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("shop");
@@ -236,14 +247,21 @@ public class ShopFragment extends Fragment {
                 // Request missing location permission.
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
+                Log.d("NOT WORKING", "LOCATION");
             } else {
                 // Location permission has been granted, continue as usual.
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(location.getLatitude(), location.getLongitude()), 13));
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13);
+                map.animateCamera(cameraUpdate);
+                Log.d("WORKING", "LOCATION");
+
+
             }
+        } else {
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(60.959707, 7.940651), 5);
+            map.animateCamera(cameraUpdate);
         }
 
-   /* CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(60.390427, 5.327775), 15);
+   /* CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13);
     map.animateCamera(cameraUpdate);*/
     }
 
@@ -270,4 +288,53 @@ public class ShopFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
+
+        protected Void doInBackground(Void... params) {
+            // Locate the class table named "shop" in Parse.com
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                    "shop");
+            try {
+                ob = query.find();
+            } catch (ParseException e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+            // Locate the listview in listview_main.xml
+            shopview = (ListView) getActivity().findViewById(R.id.shopList_main);
+            // Pass the results into an ArrayAdapter
+            adapter = new ArrayAdapter<String>(getActivity(), R.layout.shopview_item);
+            // Retrieve object "name" from Parse.com database
+            for (ParseObject shop : ob) {
+                adapter.add((String) shop.get("name"));
+            }
+            // Binds the Adapter to the ListView
+            shopview.setAdapter(adapter);
+            // Capture button clicks on ListView items
+            shopview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    // Send single item click data to SingleItemView Class
+
+                    Intent i = new Intent(getActivity(),
+                            OrderActivity.class);
+                    // Pass data "name" followed by the position
+                    i.putExtra("name", ob.get(position).getString("name"));
+                    i.putExtra("address", ob.get(position).getString("address"));
+                    // Open SingleItemView.java Activity
+                    startActivity(i);
+                }
+            });
+
+
+        }
+
+    }
 }
+
+
