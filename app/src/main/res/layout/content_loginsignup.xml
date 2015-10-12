@@ -25,15 +25,14 @@
         android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:id="@+id/linlay"
 
-        <ImageView
-            android:background="@mipmap/ic_launcher"
-            android:layout_height="250dp"
-            android:layout_width="250dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageView2" />
+    android:layout_centerVertical="true"
+    android:layout_alignParentStart="true">
+
 
 
 
@@ -44,14 +43,14 @@
         android:inputType="text"
         android:paddingStart="10dp"
         android:hint="@string/Username"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignParentEnd="true"
         android:background="#40000000"
         android:textSize="18sp"
         android:textColor="@color/background"
         android:textColorHint="#c1bdb8"
         android:drawableLeft="@drawable/user_icon"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="41dp" />
 
 
     <EditText
@@ -81,7 +80,7 @@
         android:elevation="2dp"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true" />
-
+</RelativeLayout>
 
         <Button
             android:layout_width="match_parent"

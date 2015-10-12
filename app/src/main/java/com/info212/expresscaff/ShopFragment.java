@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseUser;
 
@@ -46,6 +48,7 @@ public class ShopFragment extends Fragment {
     public static final String TAG = "main";
     MapView mapView;
     GoogleMap map;
+
 
 
     // TODO: Rename and change types of parameters
@@ -149,7 +152,7 @@ public class ShopFragment extends Fragment {
 
 
         /////////////////////////////////////////////////////////
-        //Button MapButton = (Button) getActivity().findViewById(R.id.MapTestbutton);
+    //    Button MapButton = (Button) getActivity().findViewById(R.id.MapTestbutton);
 
         TextView phone = (TextView) getActivity().findViewById(R.id.phoneNumber);
 
@@ -163,14 +166,33 @@ public class ShopFragment extends Fragment {
 
         map.addMarker(new MarkerOptions()
                 .position(auraPos)
-                .title("Cafè Aura"));
+                .title("Cafè Aura")
+                .snippet("Marken 9, 5017 Bergen"));
 
-        map.addMarker(new MarkerOptions()
+        Marker waynes = map.addMarker(new MarkerOptions()
                 .position(waynePos)
-                .title("Wayne's Coffe \n Chica, Småstrandgaten 3, 5014 Bergen"));
+                .title("Wayne's Coffee")
+                .snippet("Chica, Småstrandgaten 3, 5014 Bergen"));
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker waynes) {
+
+                Toast.makeText(getActivity(),
+                        "infowindows clicked",
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(60.390427, 5.327775), 15);
+        map.animateCamera(cameraUpdate);
 
 
     }
+
+
 
 
 
