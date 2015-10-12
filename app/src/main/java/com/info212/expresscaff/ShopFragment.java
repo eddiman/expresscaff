@@ -2,8 +2,6 @@ package com.info212.expresscaff;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,39 +13,29 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.location.LocationServices;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.SupportMapFragment;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -222,7 +210,7 @@ public class ShopFragment extends Fragment {
                         map.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lng))
                                 .title(markerTitle)
-                                .snippet(shopAddress + " phone: " + shopPhone));
+                                .snippet(shopAddress));
 
 
                     }
@@ -321,11 +309,13 @@ public class ShopFragment extends Fragment {
                                         int position, long id) {
                     // Send single item click data to SingleItemView Class
 
-                    Intent i = new Intent(getActivity(),
-                            OrderActivity.class);
+                    Intent i = new Intent(getActivity(),OrderActivity.class);
                     // Pass data "name" followed by the position
                     i.putExtra("name", ob.get(position).getString("name"));
                     i.putExtra("address", ob.get(position).getString("address"));
+                    i.putExtra("latitude", ob.get(position).getDouble("latitude"));
+                    i.putExtra("longitude", ob.get(position).getDouble("longitude"));
+                    i.putExtra("phone", ob.get(position).getString("phone"));
                     // Open SingleItemView.java Activity
                     startActivity(i);
                 }
