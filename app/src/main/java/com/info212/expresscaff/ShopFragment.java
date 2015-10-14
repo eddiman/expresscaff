@@ -238,8 +238,8 @@ public class ShopFragment extends Fragment {
                 Log.d("NOT WORKING", "LOCATION");
             } else {
                 // Location permission has been granted, continue as usual.
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13);
-                map.animateCamera(cameraUpdate);
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
+                map.moveCamera(cameraUpdate);
                 Log.d("WORKING", "LOCATION");
 
 

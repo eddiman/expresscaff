@@ -63,7 +63,7 @@
         <activity
             android:name=".OrderActivity"
             android:label="@string/title_activity_order"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme_transp_statbar" >
         </activity>
     </application>
 

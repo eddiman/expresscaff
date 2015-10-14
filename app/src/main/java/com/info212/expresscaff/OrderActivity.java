@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -18,7 +21,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseUser;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -28,6 +33,15 @@ public class OrderActivity extends AppCompatActivity {
     String address;
     Double latitude;
     Double longitude;
+
+
+
+    Spinner coffeeSpinner;
+    TextView sumCost;
+    ImageButton addOrder;
+    Button payOrderButton;
+
+    int sum;
 
     MapView shopMapView;
 
@@ -42,10 +56,10 @@ public class OrderActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         //setter fargen til statusbaren, er en bug som gjør at det @color/myPrimaryDarkColor ikke funker
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
-        }
+            getWindow().setStatusBarColor(getResources().getColor(R.color.faded));
+        }*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -63,19 +77,17 @@ public class OrderActivity extends AppCompatActivity {
                     googleMap.getUiSettings().setAllGesturesEnabled(false);
                     googleMap.setMyLocationEnabled(true);
 
-                    googleMap.addMarker(new MarkerOptions()
+                   Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude))
                             .title(name)
                             .snippet(address));
 
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15);
-                    googleMap.animateCamera(cameraUpdate);
+                    googleMap.moveCamera(cameraUpdate);
 
+                    marker.showInfoWindow();
                 }
             });
-
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.orderfab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +97,25 @@ public class OrderActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        //////////////////////////////////////Order part//////
+
+        coffeeSpinner = (Spinner) findViewById(R.id.orderselect);
+        sumCost = (TextView) findViewById(R.id.orderprice);
+        addOrder = (ImageButton) findViewById(R.id.orderadd);
+        payOrderButton = (Button) findViewById(R.id.orderconfirm);
+
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        String struser = currentUser.getUsername();
+
+
+
+
+
+
+
     }
 public void getShopInfo(){
 

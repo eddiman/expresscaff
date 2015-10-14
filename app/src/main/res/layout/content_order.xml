@@ -7,7 +7,8 @@
     tools:context="com.info212.expresscaff.OrderActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="0dp">
+    android:layout_marginTop="-28dp"
+    >
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,14 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.6"
-            android:background="@android:color/background_light"
+
             android:orientation="horizontal"
                 >
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/shopmapview"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     />
             </LinearLayout>
 
@@ -34,7 +35,7 @@
                 android:id="@+id/viewMid"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@color/myAccentColor"
+                android:background="@color/brownEight"
                 android:orientation="vertical"
                 android:padding="16dp"
                 >
@@ -80,9 +81,10 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="#c2c2c2"
+    android:background="@color/brownReallyLight"
     android:orientation="horizontal">
     <Spinner
+
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/orderselect"
@@ -108,7 +110,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="kr: 27,00"
         android:id="@+id/orderprice"
-        android:textColor="@color/background"
+        android:textColor="@color/brownFour"
         android:layout_below="@+id/orderadd"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"/>

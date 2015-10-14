@@ -13,8 +13,8 @@
     -->
 
     <color name="myPrimaryColor">#7b4c3b</color>
-    <color name="myPrimaryDarkColor">#583021</color>
-    <color name="myAccentColor">#5ee0a1</color>
+    <color name="myPrimaryDarkColor">#5b382b</color>
+    <color name="myAccentColor">#d1a28b</color>
     <color name="myDrawerBackground">#fffcf8</color>
     <color name="myWindowBackground">#fffcf8</color>
     <color name="myTextPrimaryColor">#3b3b3b</color>
@@ -32,8 +32,13 @@
     <color name="brownFour">#915b49</color>
     <color name="brownFive">#98614f</color>
     <color name="brownSix">#9e6653</color>
-    9b000000
-    <color name="faded">#9b000000</color>
+    <color name="brownSeven">#a46b57</color>
+    <color name="brownEight">#b47762</color>
+    <color name="brownNine">#ba7e6a</color>
+    <color name="brownTen">#c48873</color>
+    <color name="brownReallyLight">#f7f4f3</color>
+
+    <color name="faded">#00000000</color>
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
 </resources>
