@@ -141,7 +141,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 else  if(!emailText.contains("@")){
                 Toast.makeText(getApplicationContext(),
-                        "This is not a valid e-mail address" , Toast.LENGTH_LONG)
+                        "This is not a valid e-mail shopAddress" , Toast.LENGTH_LONG)
                         .show();
              } else if(passwordText.length() < 7){
                 Toast.makeText(getApplicationContext(),
@@ -159,7 +159,7 @@ public class SignupActivity extends AppCompatActivity {
                     user.setPassword(passwordText);
                     user.setEmail(emailText);
 
-                    user.put("address", address);
+                    user.put("shopAddress", address);
                     user.put("postal_code", postalCode);
 
                     user.put("card_type", cardType);

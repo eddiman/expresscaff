@@ -102,13 +102,14 @@
         android:id="@+id/orderadd"
         android:background="@drawable/ic_add"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="kr: 27,00"
+        android:text="kr: 0,00"
         android:id="@+id/orderprice"
         android:textColor="@color/brownFour"
         android:layout_below="@+id/orderadd"

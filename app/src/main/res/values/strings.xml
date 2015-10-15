@@ -44,7 +44,11 @@
     <string name="select_coffee">Select your coffee</string>
     <string name="select_coffeeshop">Select your coffee shop</string>
 
+    <string name="pay">Buy</string>
+
+
     <string name="title_activity_forgotten">Forgotten password</string>
     <string name="title_activity_order">Choose your coffee</string>
+    <string name="title_activity_receipt">ReceiptActivity</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.info212.expresscaff;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -203,7 +204,7 @@ public class ShopFragment extends Fragment {
                         markerTitle = parseObjects.get(i).getString("name");
                         Double lat = parseObjects.get(i).getDouble("latitude");
                         Double lng = parseObjects.get(i).getDouble("longitude");
-                        shopAddress = parseObjects.get(i).getString("address");
+                        shopAddress = parseObjects.get(i).getString("shopAddress");
                         shopPhone = parseObjects.get(i).getInt("phone");
 
 
@@ -226,27 +227,34 @@ public class ShopFragment extends Fragment {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        if (location != null)
-        {
-            final int REQUEST_CODE_LOCATION = 2;
 
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // Request missing location permission.
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-                Log.d("NOT WORKING", "LOCATION");
+        final int REQUEST_CODE_LOCATION = 2;
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+
+                  if (location != null)
+                {
+                    // Location permission has been granted, continue as usual.
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
+                    map.moveCamera(cameraUpdate);
+                    Log.d("WORKING", "LOCATION");
+                    Toast.makeText(getActivity(),
+                            "permissions and getLocation are ok",
+                            Toast.LENGTH_LONG).show();
+                    } else {
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(60.959707, 7.940651), 5);
+                    map.animateCamera(cameraUpdate);
+                    Toast.makeText(getActivity(),
+                            "cant locate",
+                            Toast.LENGTH_LONG).show();
+                    }
             } else {
-                // Location permission has been granted, continue as usual.
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
-                map.moveCamera(cameraUpdate);
-                Log.d("WORKING", "LOCATION");
+            // Request missing location permission.
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
 
-
-            }
-        } else {
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(60.959707, 7.940651), 5);
-            map.animateCamera(cameraUpdate);
         }
 
    /* CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13);
@@ -277,6 +285,17 @@ public class ShopFragment extends Fragment {
     }
 
     private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog asyncDialog = new ProgressDialog(getActivity());
+
+
+        @Override
+        protected void onPreExecute() {
+            //set message of the dialog
+            asyncDialog.setMessage("Finding closest coffeeshops...");
+            //show dialog
+            asyncDialog.show();
+            super.onPreExecute();
+        }
 
         protected Void doInBackground(Void... params) {
             // Locate the class table named "shop" in Parse.com
@@ -312,7 +331,7 @@ public class ShopFragment extends Fragment {
                     Intent i = new Intent(getActivity(),OrderActivity.class);
                     // Pass data "name" followed by the position
                     i.putExtra("name", ob.get(position).getString("name"));
-                    i.putExtra("address", ob.get(position).getString("address"));
+                    i.putExtra("shopAddress", ob.get(position).getString("shopAddress"));
                     i.putExtra("latitude", ob.get(position).getDouble("latitude"));
                     i.putExtra("longitude", ob.get(position).getDouble("longitude"));
                     i.putExtra("phone", ob.get(position).getString("phone"));
@@ -321,6 +340,7 @@ public class ShopFragment extends Fragment {
                 }
             });
 
+            asyncDialog.dismiss();
 
         }
 
