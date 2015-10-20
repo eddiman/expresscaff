@@ -33,7 +33,11 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 import java.util.Timer;
 
 public class OrderActivity extends AppCompatActivity {
@@ -52,8 +56,9 @@ public class OrderActivity extends AppCompatActivity {
     String coffee_type1;
     Calendar expireDate;
     int priceSum;
-ProgressDialog progdialog;
-
+    int barcode;
+    ProgressDialog progdialog;
+    String currentDate;
 
     Spinner coffeeSpinner;
     TextView sumCost;
@@ -167,9 +172,9 @@ public void getShopInfo(){
     shopAddress = i.getStringExtra("shopAddress");
     latitude = i.getDoubleExtra("latitude", 0);
     longitude = i.getDoubleExtra("longitude", 0);
+    Random rand = new Random();
+    barcode = rand.nextInt(999999 - 100000 + 1) + 100000;
 
-    /*latitude = Double.parseDouble(stringLatitude);
-    longitude = Double.parseDouble(stringLongitude);*/
    // Locate the TextView in singleitemview.xml
     shopname = (TextView) findViewById(R.id.shopName);
     shopaddress = (TextView) findViewById(R.id.shopAddress);
@@ -238,6 +243,8 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
        TextView paymentCardInfo = (TextView) dialog.findViewById(R.id.cardinfo);
 
         Button paymentButton = (Button) dialog.findViewById(R.id.paybutton);
+
+        //TODO: Make some options
         ImageButton paymentOptions = (ImageButton) dialog.findViewById(R.id.paymentoptions);
 
         paymentShopName.setText(popup_coffee);
@@ -257,10 +264,6 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
 
 
     }
-
-
-
-
     public void onBackPressed() {
 
         Intent intent = new Intent(OrderActivity.this, ShopActivity.class);
@@ -288,7 +291,7 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         @Override
         protected void onPreExecute() {
             //set message of the dialog
-            asyncDialog.setMessage("Transaction...");
+            asyncDialog.setMessage("Transaction in progress...");
             //show dialog
             asyncDialog.show();
             super.onPreExecute();
@@ -296,20 +299,29 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
 
         @Override
         protected Void doInBackground(Void... arg0) {
+
+            currentDate = new SimpleDateFormat("dd/MM-yyyy", Locale.getDefault()).format(new Date());
             ParseObject receipt = new ParseObject("receipt");
+
             receipt.put("username", struser );
             receipt.put("card_number", cardNumber );
             receipt.put("card_type", card );
-            receipt.put("card_month", cardMonth );
+            receipt.put("card_month", cardMonth);
             receipt.put("card_year", cardyear );
-            receipt.put("sum_cost", priceSum );
+            receipt.put("sum_cost", priceSum);
             receipt.put("shop_name", shopName);
-//                receipt.put("shop_address", shopAddress);
+            receipt.put("shop_address", shopAddress);
             receipt.put("coffee_type1", coffee_type1);
+            receipt.put("barcode_nr", barcode);
+            receipt.put("bought_at", currentDate);
             //receipt.put("expire", expireDate);
             Log.d("Things", struser + cardNumber + card + cardNumber + priceSum + shopName +
                     shopAddress + coffee_type1 + expireDate);
             receipt.saveInBackground();
+
+
+
+
 
             return null;
         }
@@ -319,6 +331,17 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             //hide the dialog
             asyncDialog.dismiss();
             Intent i = new Intent(OrderActivity.this, ReceiptActivity.class);
+
+            i.putExtra("name", shopName);
+            i.putExtra("shopAddress", shopAddress);
+            i.putExtra("coffee_type1",coffee_type1);
+            i.putExtra("currentDate", currentDate);
+            i.putExtra("coffee_price", sum);
+            i.putExtra("total_sum", priceSum);
+            i.putExtra("barcode", barcode);
+
+
+
             startActivity(i);
             super.onPostExecute(result);
         }

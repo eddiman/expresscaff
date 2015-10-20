@@ -34,7 +34,7 @@
             <LinearLayout
                 android:id="@+id/viewMid"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:background="@color/brownEight"
                 android:orientation="vertical"
                 android:padding="16dp"
@@ -48,9 +48,10 @@
             android:id="@+id/shopName" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Lorem"
+                    android:textSize="14sp"
                     android:textColor="@color/background"
                     android:id="@+id/shopAddress" />
             </LinearLayout>

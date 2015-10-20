@@ -26,6 +26,31 @@
                 android:layout_height="fill_parent" />
 
         </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nearest shop"
+            android:id="@+id/nearestButton"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/buttonshape"
+            android:textColor="#FFFCF8"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/select_coffeeshop"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:background="@color/brownTen"
+            android:textColor="#FFFCF8"
+            android:elevation="1dp"
+            />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -34,15 +59,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textSize="24sp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/select_coffeeshop"
-            android:gravity="center_vertical"
-
-            />
 
 
 
