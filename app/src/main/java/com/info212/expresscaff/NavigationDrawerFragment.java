@@ -118,7 +118,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("Select your coffee shop", getResources().getDrawable(R.drawable.ic_home)));
+        items.add(new NavigationItem("Select coffee shop", getResources().getDrawable(R.drawable.ic_home)));
+        items.add(new NavigationItem("Archived receipts", getResources().getDrawable(R.drawable.ic_folder_24dp)));
         items.add(new NavigationItem("Settings", getResources().getDrawable(R.drawable.ic_setting_light)));
         items.add(new NavigationItem("Log out", getResources().getDrawable(R.drawable.contact_icon)));
         return items;
@@ -226,10 +227,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public void setUserData(String user, String email, Bitmap avatar) {
-        ImageView avatarContainer = (ImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
+        //ImageView avatarContainer = (ImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
         ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
         ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
-        avatarContainer.setImageDrawable(new RoundImage(avatar));
+        //avatarContainer.setImageDrawable(new RoundImage(avatar));
     }
 
     public View getGoogleDrawer() {

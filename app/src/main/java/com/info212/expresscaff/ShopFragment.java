@@ -73,8 +73,7 @@ public class ShopFragment extends Fragment {
     Double nearestShopLat;
     Double nearestShopLong;
     Button nearestButton;
-    Double radiusLat = 0.003948;
-    Double radiusLong= -0.000128;
+
     public static Double radiusShow = 500.0; //TODO: only placeholder;  put later in SettingsActivity.class and refer to it from there
     Intent orderIntent;
 
@@ -186,18 +185,7 @@ public class ShopFragment extends Fragment {
 
         setMapCamera();
 
-
         new RemoteDataTask().execute();
-
-/*
-        TextView phone = (TextView) getActivity().findViewById(R.id.phoneNumber);
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        String strPhone = currentUser.getString("phone");
-        phone.setText("phone number is " + strPhone);
-*/
-
-
-
 
     }
 
@@ -226,59 +214,60 @@ public class ShopFragment extends Fragment {
                         location.distanceBetween(markerLat, markerLng, ownLat, ownLong, closestDistance);
                         Log.d("CLOSESDISTANCES", closestDistance[0] + "");
 
-
-                        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                            @Override
-                            public void onInfoWindowClick(Marker marker) {
-
-                                Intent i = new Intent(getActivity(), OrderActivity.class);
-                                // Pass data "name" followed by the position
-                                i.putExtra("name", markerTitle);
-                                i.putExtra("shopAddress", shopAddress);
-                                i.putExtra("latitude", markerLat);
-                                i.putExtra("longitude", markerLat);
-                                i.putExtra("phone", shopPhone);
-                                // Open SingleItemView.java Activity
-                                startActivity(i);
-
-                            }
-                        });
-
-
                         if (closestDistance[0] < minDistance) {
                             minDistance = closestDistance[0];
-
                             minIndex = i;
-
                         }
 
 
 
                         //Math.abs(lat - l.lat) + Math.abs(/*long - ownPoslong*/)
                         if (closestDistance[0] < radiusShow) {
-                            map.addMarker(new MarkerOptions()
+                            Marker marker = map.addMarker(new MarkerOptions()
                                     .position(new LatLng(markerLat, markerLng))
                                     .title(markerTitle)
                                     .snippet(shopAddress));
+
                         }
 
 
 
+
+
+
                     }
+
+
+                    map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+
+                            Intent i = new Intent(getActivity(), OrderActivity.class);
+                            // Pass data "name" followed by the position
+                            i.putExtra("name", marker.getTitle());
+                            i.putExtra("shopAddress", marker.getSnippet());
+                            i.putExtra("latitude", marker.getPosition().latitude);
+                            i.putExtra("longitude", marker.getPosition().longitude);
+                            i.putExtra("phone", 0);
+                            // Open SingleItemView.java Activity
+                            startActivity(i);
+
+                        }
+                    });
+
+
 
                     if (minIndex >= 0) {
                         // now nearest maker found:
                         nearestShopName = parseObjects.get(minIndex).getString("name");
                         nearestShopLat = parseObjects.get(minIndex).getDouble("latitude");
                         nearestShopLong = parseObjects.get(minIndex).getDouble("longitude");
-                        nearestshopAddress = parseObjects.get(minIndex).getString("shop_address");
+                        nearestshopAddress = parseObjects.get(minIndex).getString("address");
                         nearestshopPhone = parseObjects.get(minIndex).getInt("phone");
-                        nearestButton.setText("Nearest shop: " + nearestShopName);
+                        nearestButton.setText("Your nearest coffee shop is: " + nearestShopName);
 
-
-                        // TODO do something with nearesr marker
                     } else {
-                        nearestButton.setText("No GPS");
+                        nearestButton.setText("Cannot locate your position");
                     }
 
 
@@ -392,16 +381,17 @@ public class ShopFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             //set message of the dialog
-            asyncDialog.setMessage("Finding closest coffeeshops...");
+            asyncDialog.setMessage("Getting archived receipts...");
             //show dialog
             asyncDialog.show();
+            shopview = (ListView) getActivity().findViewById(R.id.shopList_main);
+
             super.onPreExecute();
         }
 
         protected Void doInBackground(Void... params) {
             // Locate the class table named "shop" in Parse.com
-            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                    "shop");
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("shop");
             try {
                 ob = query.find();
             } catch (ParseException e) {
@@ -413,7 +403,6 @@ public class ShopFragment extends Fragment {
 
         protected void onPostExecute(Void result) {
             // Locate the listview in listview_main.xml
-            shopview = (ListView) getActivity().findViewById(R.id.shopList_main);
             // Pass the results into an ArrayAdapter
             adapter = new ArrayAdapter<String>(getActivity(), R.layout.shopview_item);
             // Retrieve object "name" from Parse.com database

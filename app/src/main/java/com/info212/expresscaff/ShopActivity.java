@@ -21,7 +21,8 @@ import com.parse.ParseUser;
 
 
 public class ShopActivity extends AppCompatActivity
-        implements NavigationDrawerCallbacks, ShopFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerCallbacks, ShopFragment.OnFragmentInteractionListener, ReceiptListFragment.OnFragmentInteractionListener {
+
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -79,7 +80,17 @@ public class ShopActivity extends AppCompatActivity
 
                 break;
 
-            case 2:
+            case 1: //
+                fragment = getFragmentManager().findFragmentByTag(ReceiptListFragment.TAG);
+                if (fragment == null) {
+                    fragment = new ReceiptListFragment();
+                }
+                getFragmentManager().beginTransaction().replace(R.id.container, fragment, ReceiptListFragment.TAG).commit();
+
+                break;
+
+
+            case 3:
 
                 ParseUser.logOut();
                 Intent intent = new Intent(ShopActivity.this,

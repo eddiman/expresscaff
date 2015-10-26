@@ -79,11 +79,7 @@ public class OrderActivity extends AppCompatActivity {
         //setter at activitien setter en custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
-        //setter fargen til statusbaren, er en bug som gjør at det @color/myPrimaryDarkColor ikke funker
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.faded));
-        }*/
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ////////////////////////////////////////////////////////////////////////////////////////

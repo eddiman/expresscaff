@@ -29,7 +29,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nearest shop"
+            android:text="Cannot locate your position"
             android:id="@+id/nearestButton"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/buttonshape"
