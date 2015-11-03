@@ -18,27 +18,26 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Timer;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -54,7 +53,11 @@ public class OrderActivity extends AppCompatActivity {
     int cardMonth;
     int cardyear;
     String coffee_type1;
-    Calendar expireDate;
+
+    String expireDateString;
+    Date expireTime;
+    String expireDate;
+
     int priceSum;
     int barcode;
     ProgressDialog progdialog;
@@ -100,7 +103,9 @@ public class OrderActivity extends AppCompatActivity {
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
                         .title(shopName)
-                        .snippet(shopAddress));
+                        .snippet(shopAddress)
+                        .icon((BitmapDescriptorFactory.fromResource(R.drawable.marker)))
+                );
 
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
                 googleMap.moveCamera(cameraUpdate);
@@ -137,8 +142,8 @@ public class OrderActivity extends AppCompatActivity {
 
         // name; //shopname
         // shopAddress; //shopaddress
+        //expired;
 
-         //expired;
 
 
 
@@ -209,9 +214,10 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
                 sum = 0;
                 break;
         }
+        priceSum = sum; //sets the sum of entire purchase, TODO: when multiple purchases are available; add new int variabale
+
         sumCost.setText("kr " + String.valueOf(sum) + ",00");
         payOrderButton.setText("kr " + String.valueOf(sum) + ",00");
-        priceSum = sum; //sets the sum of entire purchase, TODO: when multiple purchases are available; add new int variabale
 
     }
 
@@ -284,6 +290,9 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         ProgressDialog asyncDialog = new ProgressDialog(OrderActivity.this);
 
 
+
+
+
         @Override
         protected void onPreExecute() {
             //set message of the dialog
@@ -296,7 +305,26 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            currentDate = new SimpleDateFormat("dd/MM-yyyy", Locale.getDefault()).format(new Date());
+            currentDate = new SimpleDateFormat("dd/MM-yyyy HH:mm", Locale.getDefault()).format(new Date());
+
+            //////////Add two hours to time
+            expireDateString = new SimpleDateFormat("dd/MM-yyyy HH:mm", Locale.getDefault()).format(new Date());
+
+            final long millisToAdd = 7_200_000; //two hours
+
+           DateFormat formatExpireDate = new SimpleDateFormat("dd/MM-yyyy HH:mm");
+            try {
+                expireTime = formatExpireDate.parse(expireDateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            expireTime.setTime(expireTime.getTime() + millisToAdd);
+
+
+            expireDate = formatExpireDate.format(expireTime);
+
+            /////////////////////////////////////////////
+
             ParseObject receipt = new ParseObject("receipt");
 
             receipt.put("username", struser );
@@ -310,9 +338,9 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             receipt.put("coffee_type1", coffee_type1);
             receipt.put("barcode_nr", barcode);
             receipt.put("bought_at", currentDate);
-            //receipt.put("expire", expireDate);
+            receipt.put("expire_date", expireDate);
             Log.d("Things", struser + cardNumber + card + cardNumber + priceSum + shopName +
-                    shopAddress + coffee_type1 + expireDate);
+                    shopAddress + coffee_type1 + expireDateString);
             receipt.saveInBackground();
 
 
@@ -332,9 +360,10 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             i.putExtra("shopAddress", shopAddress);
             i.putExtra("coffee_type1",coffee_type1);
             i.putExtra("currentDate", currentDate);
+            i.putExtra("expire_date", expireDate);
             i.putExtra("coffee_price", sum);
             i.putExtra("total_sum", priceSum);
-            i.putExtra("barcode", barcode);
+            i.putExtra("barcode_nr", barcode);
 
 
 

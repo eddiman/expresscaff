@@ -44,10 +44,14 @@ public class ShopActivity extends AppCompatActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
         }
+        //use to handle onBackPressed from ReceiptActivity
+
+
 
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)

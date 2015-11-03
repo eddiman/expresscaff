@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/text"
-    android:layout_width="fill_parent"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
-    android:padding="5sp"
-    android:textSize="25sp" >
+    android:layout_width="fill_parent"
+    android:id="@+id/rowlayout"
+    >
 
-</TextView>
+    <TextView
+        android:id="@+id/receiptlistname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:textSize="20sp"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/receiptlistaddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:textSize="16sp"
+        android:layout_below="@+id/receiptlistname"/>
+    <TextView
+        android:id="@+id/receiptlistdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:textSize="16sp"
+        android:layout_below="@+id/receiptlistexpire"
+        android:layout_alignParentEnd="true" />
+    <TextView
+        android:id="@+id/receiptlistexpire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:textSize="20sp"
+        android:layout_alignParentEnd="true"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/divider1"
+        android:background="#3c000000"
+        android:layout_below="@+id/receiptlistdate"
+        android:layout_alignParentEnd="true"
+ />
+
+</RelativeLayout>

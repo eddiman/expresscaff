@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="350dp"
+    android:paddingBottom="24dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="24dp"
+
+    android:orientation="horizontal"
+    android:textColor="@color/myPrimaryColor"
+    >
+
+
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:id="@+id/barcodepop"
+        android:background="@drawable/barcode"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:id="@+id/barcodetextpop"
+        android:text="barcode"
+        android:layout_below="@+id/barcodepop"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

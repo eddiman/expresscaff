@@ -2,6 +2,7 @@ package com.info212.expresscaff;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -55,16 +58,17 @@ public class ShopFragment extends Fragment {
     public static final String TAG = "main";
     MapView mapView;
     GoogleMap map;
+    static Location location;
+
     String markerTitle;
     String shopAddress;
     int shopPhone;
     ListView shopview;
     List<ParseObject> ob;
     ArrayAdapter<String> adapter;
-    Location location;
+
     float[] closestDistance = new float[10];
-    float[] radiusDistance = new float[10];
-    List<Float> listFloat;
+
     Double ownLat;
     Double ownLong;
     String nearestShopName;
@@ -75,11 +79,12 @@ public class ShopFragment extends Fragment {
     Button nearestButton;
 
     public static Double radiusShow = 500.0; //TODO: only placeholder;  put later in SettingsActivity.class and refer to it from there
+    Double radiusShowMore = 500.0;
     Intent orderIntent;
 
     Double markerLat;
     Double markerLng;
-
+    float alpha = (float) 0.35;
 
 
 
@@ -207,8 +212,8 @@ public class ShopFragment extends Fragment {
                     for (int i = 0; i < parseObjects.size(); i++) {
 
                         markerTitle = parseObjects.get(i).getString("name");
-                         markerLat = parseObjects.get(i).getDouble("latitude");
-                         markerLng = parseObjects.get(i).getDouble("longitude");
+                        markerLat = parseObjects.get(i).getDouble("latitude");
+                        markerLng = parseObjects.get(i).getDouble("longitude");
                         shopAddress = parseObjects.get(i).getString("address");
                         shopPhone = parseObjects.get(i).getInt("phone");
                         location.distanceBetween(markerLat, markerLng, ownLat, ownLong, closestDistance);
@@ -220,19 +225,30 @@ public class ShopFragment extends Fragment {
                         }
 
 
-
-                        //Math.abs(lat - l.lat) + Math.abs(/*long - ownPoslong*/)
                         if (closestDistance[0] < radiusShow) {
                             Marker marker = map.addMarker(new MarkerOptions()
                                     .position(new LatLng(markerLat, markerLng))
                                     .title(markerTitle)
-                                    .snippet(shopAddress));
+                                    .snippet(shopAddress)
+                                    .icon((BitmapDescriptorFactory.fromResource(R.drawable.marker)))
+
+                            );
+
+
 
                         }
 
+                        if (closestDistance[0] < radiusShow + radiusShowMore) {
+                            Marker marker = map.addMarker(new MarkerOptions()
+                                    .position(new LatLng(markerLat, markerLng))
+                                    .title(markerTitle)
+                                    .snippet(shopAddress)
+                                    .alpha(alpha)
+                                    .icon((BitmapDescriptorFactory.fromResource(R.drawable.marker)))
+                            );
 
 
-
+                        }
 
 
                     }
@@ -256,7 +272,6 @@ public class ShopFragment extends Fragment {
                     });
 
 
-
                     if (minIndex >= 0) {
                         // now nearest maker found:
                         nearestShopName = parseObjects.get(minIndex).getString("name");
@@ -269,8 +284,6 @@ public class ShopFragment extends Fragment {
                     } else {
                         nearestButton.setText("Cannot locate your position");
                     }
-
-
 
 
                 } else {
@@ -352,12 +365,14 @@ public class ShopFragment extends Fragment {
     }
 
 
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -381,7 +396,7 @@ public class ShopFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             //set message of the dialog
-            asyncDialog.setMessage("Getting archived receipts...");
+            asyncDialog.setMessage("Finding closest coffeeshops...");
             //show dialog
             asyncDialog.show();
             shopview = (ListView) getActivity().findViewById(R.id.shopList_main);

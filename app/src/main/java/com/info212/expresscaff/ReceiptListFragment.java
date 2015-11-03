@@ -1,6 +1,7 @@
 package com.info212.expresscaff;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,9 +45,12 @@ public class ReceiptListFragment extends Fragment {
 
     ParseUser currentUser = ParseUser.getCurrentUser();
     String struser = currentUser.getUsername();
+
     ListView receiptView;
     List<ParseObject> parseReceiptObject;
-    ArrayAdapter<String> adapter;
+    private List<Receipt> ReceiptListClass = null;
+
+    ReceiptListAdapter adapter;
 
 
 
@@ -99,7 +106,41 @@ public class ReceiptListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
 
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                   /* Fragment frag = new ShopFragment();
+
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.container, frag);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.addToBackStack(null);
+                    ft.commit();*/
+                    Intent intent = new Intent(getActivity(), ShopActivity.class);
+                    startActivity(intent);
+
+
+
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -146,31 +187,32 @@ public class ReceiptListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             //set message of the dialog
-            asyncDialog.setMessage("Finding closest coffeeshops...");
+            asyncDialog.setMessage("Getting archived receipts...");
             //show dialog
+            //TODO
             asyncDialog.show();
             super.onPreExecute();
         }
 
         protected Void doInBackground(Void... params) {
-            // Locate the class table named "shop" in Parse.com
-            /*ParseQuery<ParseObject> query = ParseQuery.getQuery("receipt");
-            query.whereEqualTo("username", struser);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> receiptList, ParseException e) {
-                    if (e == null) {
-                        Log.d("score", "Retrieved " + receiptList.size() + " scores");
-                        parseReceiptObject = receiptList;
-                    } else {
-                        Log.d("score", "Error: " + e.getMessage());
-                    }
-                }
-            });*/
-
-            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("receipt");
-            query.whereEqualTo("username", struser);
+             ReceiptListClass = new ArrayList<Receipt>();
             try {
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("receipt");
+                query.whereEqualTo("username", struser);
                 parseReceiptObject = query.find();
+                for (ParseObject receipt: parseReceiptObject){
+                Receipt r = new Receipt();
+                    r.setNameShop((String) receipt.get("shop_name"));
+                    r.setAddress((String) receipt.get("shop_address"));
+                    r.setExpire((String) receipt.get("expired"));
+                    r.setDate((String) receipt.get("bought_at"));
+                    r.setCoffeeType1((String) receipt.get("coffee_type1"));
+                    r.setCoffeePrice((Integer) receipt.get("sum_cost"));
+                    r.setTotalSum((Integer) receipt.get("sum_cost"));
+                    r.setBarcode((Integer) receipt.get("barcode_nr"));
+                    r.setExpireDate((String) receipt.get("expire_date"));
+                    ReceiptListClass.add(r);
+                }
             } catch (ParseException e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
@@ -182,23 +224,19 @@ public class ReceiptListFragment extends Fragment {
             // Locate the listview in listview_main.xml
             receiptView = (ListView) getActivity().findViewById(R.id.receiptList);
             // Pass the results into an ArrayAdapter
-            adapter =  new ArrayAdapter<String>(getActivity(), R.layout.receiptview_item);
-            // Retrieve object "name" from Parse.com database
-            for (ParseObject receipt : parseReceiptObject) {
-                adapter.add((String) receipt.get("shop_name"));
-            }
+            adapter =  new ReceiptListAdapter(getActivity(), ReceiptListClass);
             // Binds the Adapter to the ListView
             receiptView.setAdapter(adapter);
 
 
 
-            // Capture button clicks on ListView items
+           /* // Capture button clicks on ListView items
             receiptView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     // Send single item click data to SingleItemView Class
-/*
+
                     Intent i = new Intent(getActivity(), OrderActivity.class);
                     // Pass data "name" followed by the position
                     i.putExtra("name", ob.get(position).getString("name"));
@@ -207,9 +245,9 @@ public class ReceiptListFragment extends Fragment {
                     i.putExtra("longitude", ob.get(position).getDouble("longitude"));
                     i.putExtra("phone", ob.get(position).getString("phone"));
                     // Open SingleItemView.java Activity
-                    startActivity(i);*/
+                    startActivity(i);
                 }
-            });
+            });*/
 
             asyncDialog.dismiss();
 
