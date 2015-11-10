@@ -2,6 +2,7 @@ package com.info212.expresscaff;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class ReceiptListAdapter extends BaseAdapter {
     private List<Receipt> ReceiptListClass = null;
     private ArrayList<Receipt> arraylist;
 
+    private int[] colors = new int[] { Color.parseColor("#f2ede7"), Color.parseColor("#fffcf8")};
 
     public ReceiptListAdapter(Context context, List<Receipt> ReceiptListClass) {
     mContext = context;
@@ -61,6 +63,8 @@ public class ReceiptListAdapter extends BaseAdapter {
             holder.receiptlistAddress = (TextView) view.findViewById(R.id.receiptlistaddress);
             holder.receiptlistDate = (TextView) view.findViewById(R.id.receiptlistdate);
             holder.receiptlistExpire = (TextView) view.findViewById(R.id.receiptlistexpire);
+            int colorPos = position % colors.length;
+            view.setBackgroundColor(colors[colorPos]);
             view.setTag(holder);
         }else{
             holder = (ViewHolder) view.getTag();

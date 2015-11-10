@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.info212.expresscaff.ReceiptListFragment"
-    android:tag="ShopFragment">
+    android:tag="FavListFragment">
 
 
 <LinearLayout
@@ -31,23 +31,14 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Purchased"
-            android:textColor="@color/background"
 
-            android:id="@+id/textView5"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/receiptList"
+        android:id="@+id/favList"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.8" />
 </LinearLayout>

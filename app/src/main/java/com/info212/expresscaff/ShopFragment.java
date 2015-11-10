@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -144,15 +145,7 @@ public class ShopFragment extends Fragment {
         map.getUiSettings().setMyLocationButtonEnabled(true);
         map.setMyLocationEnabled(true);
 
-        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-        /*try {
-            MapsInitializer.initialize(this.getActivity());
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }*/
-
-        // Updates the location and zoom of the MapView
-
+       ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Choose your coffee shop");
 
         return v;
 
@@ -225,7 +218,7 @@ public class ShopFragment extends Fragment {
                         }
 
 
-                        if (closestDistance[0] < radiusShow) {
+                        if (closestDistance[0] < SettingsActivity.radius) {
                             Marker marker = map.addMarker(new MarkerOptions()
                                     .position(new LatLng(markerLat, markerLng))
                                     .title(markerTitle)
@@ -420,6 +413,7 @@ public class ShopFragment extends Fragment {
             // Locate the listview in listview_main.xml
             // Pass the results into an ArrayAdapter
             adapter = new ArrayAdapter<String>(getActivity(), R.layout.shopview_item);
+
             // Retrieve object "name" from Parse.com database
             for (ParseObject shop : ob) {
                 adapter.add((String) shop.get("name"));

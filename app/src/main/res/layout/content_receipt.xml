@@ -9,11 +9,20 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_marginTop="60dp"
     tools:showIn="@layout/activity_receipt" tools:context="com.info212.expresscaff.ReceiptActivity">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="16dp"
+    android:background="@drawable/boxshape"
+    android:elevation="2dp"
+    android:id="@+id/relativeLayout">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="name"
+        android:textColor="@color/background"
         android:id="@+id/receiptShopName"
         android:textSize="30sp"
         android:gravity="center_vertical"
@@ -26,6 +35,7 @@
         android:text="address"
         android:id="@+id/receiptShopAddress"
         android:textSize="28sp"
+        android:textColor="@color/background"
         android:layout_below="@+id/receiptShopName"
         android:layout_centerHorizontal="true" />
 
@@ -33,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/divider1"
-        android:background="@android:color/darker_gray"
+        android:background="@color/background"
         android:layout_below="@+id/receiptShopAddress"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
@@ -44,6 +54,7 @@
         android:layout_height="wrap_content"
         android:text="valid"
         android:id="@+id/receiptvaliddate"
+        android:textColor="@color/background"
         android:textSize="28sp"
         android:layout_below="@+id/divider1"
         android:layout_centerHorizontal="true" />
@@ -53,13 +64,14 @@
         android:text="time left"
         android:id="@+id/receiptvalidtime"
         android:textSize="36sp"
+        android:textColor="@color/background"
         android:layout_below="@+id/receiptvaliddate"
         android:layout_centerHorizontal="true" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/divider2"
-        android:background="@android:color/darker_gray"
+        android:background="@color/background"
         android:layout_below="@+id/receiptvalidtime"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
@@ -71,6 +83,7 @@
         android:text="coffee"
         android:id="@+id/receiptcoffee"
         android:textSize="24sp"
+        android:textColor="@color/background"
         android:layout_alignTop="@+id/receiptprice"
         android:layout_alignParentStart="true"
         android:layout_marginEnd="40dp"/>
@@ -81,6 +94,7 @@
         android:text="price"
         android:id="@+id/receiptprice"
         android:textSize="24sp"
+        android:textColor="@color/background"
         android:layout_below="@+id/divider2"
 
         android:layout_alignParentEnd="true"/>
@@ -89,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/divider3"
-        android:background="@android:color/darker_gray"
+        android:background="@color/background"
         android:layout_below="@+id/receiptcoffee"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="15dp" />
@@ -100,6 +114,7 @@
         android:text="sum"
         android:id="@+id/receiptsumprice"
         android:textSize="24sp"
+        android:textColor="@color/background"
         android:layout_below="@+id/divider3"
 
         android:layout_alignParentEnd="true"/>
@@ -108,7 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/equaldivider1"
-        android:background="@android:color/darker_gray"
+        android:background="@color/background"
         android:layout_below="@+id/receiptsumprice"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="2dp" />
@@ -116,16 +131,27 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/equaldivider2"
-        android:background="@android:color/darker_gray"
+        android:background="@color/background"
         android:layout_below="@+id/equaldivider1"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="2dp" />
+</RelativeLayout>
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_alignParentBottom="true"
-    android:layout_alignEnd="@+id/equaldivider2">
+    android:layout_alignEnd="@+id/relativeLayout"
+    android:id="@+id/linearLayout2">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(Click to enlarge)"
+        android:id="@+id/textView"
+        android:textColor="#4d000000"
+        android:layout_gravity="center_horizontal" />
+
     <ImageButton
         android:layout_width="150dp"
         android:layout_height="100dp"
@@ -133,7 +159,7 @@
         android:background="@drawable/barcode"
         android:layout_below="@+id/equaldivider2"
         android:layout_alignStart="@+id/textView2"
-        android:layout_marginTop="34dp" />
+         />
 
     <TextView
         android:layout_width="wrap_content"
@@ -143,4 +169,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_toStartOf="@+id/receiptvalidtime" />
 </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/purchasedate"
+        android:text="Purchased: 0/00-0000 00:00"
+        android:layout_alignBottom="@+id/linearLayout2"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

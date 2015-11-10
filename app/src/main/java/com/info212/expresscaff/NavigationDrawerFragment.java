@@ -24,7 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -120,8 +119,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         List<NavigationItem> items = new ArrayList<NavigationItem>();
         items.add(new NavigationItem("Select coffee shop", getResources().getDrawable(R.drawable.ic_home)));
         items.add(new NavigationItem("Archived receipts", getResources().getDrawable(R.drawable.ic_folder_24dp)));
-        items.add(new NavigationItem("Settings", getResources().getDrawable(R.drawable.ic_setting_light)));
-        items.add(new NavigationItem("Log out", getResources().getDrawable(R.drawable.contact_icon)));
+        items.add(new NavigationItem("Favorites", getResources().getDrawable(R.drawable.ic_star_menu)));
+        items.add(new NavigationItem("Settings", getResources().getDrawable(R.drawable.ic_setting)));
+        items.add(new NavigationItem("Log out", getResources().getDrawable(R.drawable.contact_icon_brown)));
         return items;
     }
 

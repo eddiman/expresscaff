@@ -16,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class ReceiptActivity extends AppCompatActivity {
     Toolbar mToolbar;
 
@@ -41,7 +43,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
     ImageButton receiptBarcodeButton;
     TextView receiptBarcodeView;
-
+    TextView receiptPurchased;
 
 
     @Override
@@ -52,6 +54,7 @@ public class ReceiptActivity extends AppCompatActivity {
         //setter at activitien setter en custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
+
         //setter fargen til statusbaren, er en bug som gjør at det @color/myPrimaryDarkColor ikke funker
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -59,7 +62,7 @@ public class ReceiptActivity extends AppCompatActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getOrderInfo();
-
+        getSupportActionBar().setTitle(receiptShopName + ", " +currentDate);
         receiptBarcodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +105,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
         receiptBarcodeButton = (ImageButton) findViewById(R.id.barcodeButton);
         receiptBarcodeView = (TextView) findViewById(R.id.receiptbarcodenr);
+        receiptPurchased = (TextView) findViewById(R.id.purchasedate);
 
 
         // Load the text into the TextView
@@ -116,6 +120,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
 
         receiptBarcodeView.setText(String.valueOf(barcode));
+        receiptPurchased.setText("Date of purchase: " + currentDate);
 
 
     }

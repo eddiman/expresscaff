@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +31,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.DateFormat;
@@ -36,6 +42,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -63,15 +70,26 @@ public class OrderActivity extends AppCompatActivity {
     ProgressDialog progdialog;
     String currentDate;
 
+    ParseUser currentUser = ParseUser.getCurrentUser();
+
+
+    TextView selectCoffeeText;
     Spinner coffeeSpinner;
     TextView sumCost;
-    ImageButton addOrder;
+    Button addOrder;
     Button payOrderButton;
+    ImageView coffeeContent;
 
+    FloatingActionButton fab;
+
+    boolean userHasFavorite = false;
+    boolean shopIsAFavorite = false;
+    boolean favoriteTrue;
     int sum = 0;
 
     MapView shopMapView;
 
+    String[] coffeeSpinnerTypes= {"Coffee, Black", "Coffee Americano", "Espresso", "Coffee Macchiato", "Caffe Latte"};
 
     Toolbar mToolbar;
     @Override
@@ -83,10 +101,27 @@ public class OrderActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
+        struser = currentUser.getUsername();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
+
+
+
+
+
         ////////////////////////////////////////////////////////////////////////////////////////
         getShopInfo();
+        checkFavorite();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkIfShopFavorite();
+
+            }
+        }, 1000);
 
         shopMapView = (MapView) findViewById(R.id.shopmapview);
 
@@ -101,10 +136,10 @@ public class OrderActivity extends AppCompatActivity {
                 googleMap.setMyLocationEnabled(true);
 
                 Marker marker = googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(latitude, longitude))
-                        .title(shopName)
-                        .snippet(shopAddress)
-                        .icon((BitmapDescriptorFactory.fromResource(R.drawable.marker)))
+                                .position(new LatLng(latitude, longitude))
+                                .title(shopName)
+                                .snippet(shopAddress)
+                                .icon((BitmapDescriptorFactory.fromResource(R.drawable.marker)))
                 );
 
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
@@ -114,27 +149,41 @@ public class OrderActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.orderfab);
+
+        fab = (FloatingActionButton) findViewById(R.id.orderfab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Added to your favorites!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                if(favoriteTrue){
+                    Snackbar.make(view, "This shop is already in your favorites!", Snackbar.LENGTH_LONG).show();
+
+                }else{
+                    fab.setImageResource(R.drawable.ic_star);
+                    Snackbar.make(view, "Added to your favorites!", Snackbar.LENGTH_LONG).show();
+                    ParseObject addFav = new ParseObject("favorites");
+                    addFav.put("user", struser);
+                    addFav.put("shop_name", shopName);
+                    addFav.put("shop_address", shopAddress);
+                    addFav.put("latitude", latitude);
+                    addFav.put("longitude", longitude);
+                    addFav.saveInBackground();
+                }
+
             }
         });
 
         progdialog = new ProgressDialog(OrderActivity.this);
 
         //////////////////////////////////////Order part//////
-
+        selectCoffeeText = (TextView) findViewById(R.id.textViewSelect);
         coffeeSpinner = (Spinner) findViewById(R.id.orderselect);
         sumCost = (TextView) findViewById(R.id.orderprice);
-        addOrder = (ImageButton) findViewById(R.id.orderadd);
+        addOrder = (Button) findViewById(R.id.orderadd);
         payOrderButton = (Button) findViewById(R.id.orderconfirm);
+        coffeeContent = (ImageView) findViewById(R.id.coffee_content);
 
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        struser = currentUser.getUsername();
         card = currentUser.getString("card_type");
         cardNumber = currentUser.getString("card_number");
         cardMonth = currentUser.getInt("card_month");
@@ -144,9 +193,14 @@ public class OrderActivity extends AppCompatActivity {
         // shopAddress; //shopaddress
         //expired;
 
+        addOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+            }
+        });
 
-
-
+        coffeeSpinner.setAdapter(new CoffeeSpinnerAdapter(OrderActivity.this, coffeeSpinnerTypes));
 
         setCoffeePrice();
 
@@ -162,6 +216,7 @@ public class OrderActivity extends AppCompatActivity {
 
 
     }
+
 
 public void getShopInfo(){
 
@@ -197,29 +252,36 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
 
             case 0:
                 sum = 27;
+                coffeeContent.setImageResource(R.drawable.black);
                 break;
             case 1:
                 sum = 32;
+                coffeeContent.setImageResource(R.drawable.americano);
                 break;
             case 2:
                 sum = 18;
+                coffeeContent.setImageResource(R.drawable.espresso);
                 break;
             case 3:
                 sum = 35;
+                coffeeContent.setImageResource(R.drawable.macci);
                 break;
             case 4:
                 sum = 35;
+                coffeeContent.setImageResource(R.drawable.latte);
                 break;
             default:
                 sum = 0;
                 break;
         }
         priceSum = sum; //sets the sum of entire purchase, TODO: when multiple purchases are available; add new int variabale
-
+        selectCoffeeText.setText(coffeeSpinner.getSelectedItem().toString());
         sumCost.setText("kr " + String.valueOf(sum) + ",00");
         payOrderButton.setText("kr " + String.valueOf(sum) + ",00");
 
     }
+
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
@@ -230,6 +292,61 @@ coffeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
 
     }
 
+    public void checkFavorite(){
+
+        final ParseQuery<ParseObject> userQuery = ParseQuery.getQuery("favorites");
+        userQuery.whereEqualTo("user", struser);
+        userQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, com.parse.ParseException e) {
+                if (objects.size() > 0) {
+                    userHasFavorite = true;
+                    Log.d("shop ,USERis favorites ", objects + "");
+                } else {
+                    userHasFavorite = false;
+
+                }
+
+
+            }
+        });
+
+        ParseQuery<ParseObject> favQuery = ParseQuery.getQuery("favorites");
+        favQuery.whereEqualTo("shop_name", shopName);
+        favQuery.findInBackground(new FindCallback<ParseObject>()
+
+        {
+            @Override
+            public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+                if (parseObjects.size() > 0) {
+                    shopIsAFavorite = true;
+                    Log.d("shop is in 'favorites' ", parseObjects + "");
+                } else {
+                    shopIsAFavorite = false;
+
+                }
+
+
+            }
+        });
+    }
+
+    public void checkIfShopFavorite(){
+
+        if(!userHasFavorite || !shopIsAFavorite){
+            Log.d("shop is NOT favorite", favoriteTrue + "");
+            fab.setImageResource(R.drawable.ic_star_outline);
+
+            favoriteTrue = false;
+        } else {
+            favoriteTrue = true;
+            Log.d("shop is favorite FINAL", favoriteTrue + "");
+            fab.setImageResource(R.drawable.ic_star);
+
+
+        }
+
+    }
 
     public void payment_window(final String popup_coffee, final String popup_name, final  int popup_price,
                                 String popup_cardType, String popup_cardNumber){

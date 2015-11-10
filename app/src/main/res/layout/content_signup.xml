@@ -44,7 +44,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:id="@+id/contact_icon"
-                        android:background="@drawable/contact_icon"
+                        android:background="@drawable/contact_icon_gray"
 
                         />
                     <ImageView

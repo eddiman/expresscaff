@@ -21,7 +21,7 @@ import com.parse.ParseUser;
 
 
 public class ShopActivity extends AppCompatActivity
-        implements NavigationDrawerCallbacks, ShopFragment.OnFragmentInteractionListener, ReceiptListFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerCallbacks, ShopFragment.OnFragmentInteractionListener, ReceiptListFragment.OnFragmentInteractionListener, FavListFragment.OnFragmentInteractionListener {
 
 
     /**
@@ -84,7 +84,8 @@ public class ShopActivity extends AppCompatActivity
 
                 break;
 
-            case 1: //
+            case 1: //Receiptlist
+
                 fragment = getFragmentManager().findFragmentByTag(ReceiptListFragment.TAG);
                 if (fragment == null) {
                     fragment = new ReceiptListFragment();
@@ -94,7 +95,25 @@ public class ShopActivity extends AppCompatActivity
                 break;
 
 
-            case 3:
+            case 2: //Favorite list
+
+                fragment = getFragmentManager().findFragmentByTag(FavListFragment.TAG);
+                if (fragment == null) {
+                    fragment = new FavListFragment();
+                }
+                getFragmentManager().beginTransaction().replace(R.id.container, fragment, FavListFragment.TAG).commit();
+
+                break;
+
+            case 3: // Settings
+
+                Intent i = new Intent(ShopActivity.this,
+                        SettingsActivity.class);
+                startActivity(i);
+                finish();
+                break;
+
+            case 4:
 
                 ParseUser.logOut();
                 Intent intent = new Intent(ShopActivity.this,

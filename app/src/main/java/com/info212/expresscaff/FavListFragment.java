@@ -1,25 +1,20 @@
 package com.info212.expresscaff;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -32,26 +27,26 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ReceiptListFragment.OnFragmentInteractionListener} interface
+ * {@link FavListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ReceiptListFragment#newInstance} factory method to
+ * Use the {@link FavListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReceiptListFragment extends Fragment {
+public class FavListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final String TAG = "receiptList";
+    public static final String TAG = "favList";
 
     ParseUser currentUser = ParseUser.getCurrentUser();
     String struser = currentUser.getUsername();
 
-    ListView receiptView;
-    List<ParseObject> parseReceiptObject;
-    private List<Receipt> ReceiptListClass = null;
+    ListView favListView;
+    List<ParseObject> parseFavObject;
+    private List<Favorite> FavListClass = null;
 
-    ReceiptListAdapter adapter;
+    FavListAdapter adapter;
 
 
 
@@ -70,8 +65,8 @@ public class ReceiptListFragment extends Fragment {
      * @return A new instance of fragment ReceiptListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReceiptListFragment newInstance(String param1, String param2) {
-        ReceiptListFragment fragment = new ReceiptListFragment();
+    public static FavListFragment newInstance(String param1, String param2) {
+        FavListFragment fragment = new FavListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,7 +74,7 @@ public class ReceiptListFragment extends Fragment {
         return fragment;
     }
 
-    public ReceiptListFragment() {
+    public FavListFragment() {
         // Required empty public constructor
     }
 
@@ -96,10 +91,10 @@ public class ReceiptListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Select a receipt");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Select a favorite shop");
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_receipt_list, container, false);
+        return inflater.inflate(R.layout.fragment_fav_list, container, false);
     }
 
 
@@ -191,7 +186,7 @@ public class ReceiptListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             //set message of the dialog
-            asyncDialog.setMessage("Getting archived receipts...");
+            asyncDialog.setMessage("Getting favorites...");
             //show dialog
             //TODO
             asyncDialog.show();
@@ -199,23 +194,19 @@ public class ReceiptListFragment extends Fragment {
         }
 
         protected Void doInBackground(Void... params) {
-             ReceiptListClass = new ArrayList<Receipt>();
+             FavListClass = new ArrayList<Favorite>();
             try {
-                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("receipt");
-                query.whereEqualTo("username", struser);
-                parseReceiptObject = query.find();
-                for (ParseObject receipt: parseReceiptObject){
-                Receipt r = new Receipt();
-                    r.setNameShop((String) receipt.get("shop_name"));
-                    r.setAddress((String) receipt.get("shop_address"));
-                    r.setExpire((String) receipt.get("expired"));
-                    r.setDate((String) receipt.get("bought_at"));
-                    r.setCoffeeType1((String) receipt.get("coffee_type1"));
-                    r.setCoffeePrice((Integer) receipt.get("sum_cost"));
-                    r.setTotalSum((Integer) receipt.get("sum_cost"));
-                    r.setBarcode((Integer) receipt.get("barcode_nr"));
-                    r.setExpireDate((String) receipt.get("expire_date"));
-                    ReceiptListClass.add(r);
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("favorites");
+                query.whereEqualTo("user", struser);
+                parseFavObject = query.find();
+                for (ParseObject favorite: parseFavObject){
+                Favorite r = new Favorite();
+                    r.setNameShop((String) favorite.get("shop_name"));
+                    r.setAddress((String) favorite.get("shop_address"));
+                    r.setLatitude((Double) favorite.get("latitude"));
+                    r.setLongitude((Double) favorite.get("longitude"));
+                    r.setPhoneNr((String) favorite.get("phone"));
+                    FavListClass.add(r);
                     query.orderByDescending("createdAt");
 
                 }
@@ -228,16 +219,16 @@ public class ReceiptListFragment extends Fragment {
         }
         protected void onPostExecute(Void result) {
             // Locate the listview in listview_main.xml
-            receiptView = (ListView) getActivity().findViewById(R.id.receiptList);
+            favListView = (ListView) getActivity().findViewById(R.id.favList);
             // Pass the results into an ArrayAdapter
-            adapter =  new ReceiptListAdapter(getActivity(), ReceiptListClass);
+            adapter =  new FavListAdapter(getActivity(), FavListClass);
             // Binds the Adapter to the ListView
-            receiptView.setAdapter(adapter);
+            favListView.setAdapter(adapter);
 
 
 
            /* // Capture button clicks on ListView items
-            receiptView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            FavView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {

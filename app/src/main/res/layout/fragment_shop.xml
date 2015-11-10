@@ -30,7 +30,7 @@
     android:layout_width="fill_parent"
     android:layout_height="120dp"
     android:background="@color/brownTen"
-    android:elevation="1dp"
+    android:elevation="2dp"
 
     >
         <TextView
@@ -50,15 +50,14 @@
             android:layout_height="wrap_content"
             android:text="Cannot locate your position"
             android:id="@+id/nearestButton"
-            android:layout_gravity="center_horizontal"
             android:background="@drawable/buttonshape"
             android:textColor="#FFFCF8"
             android:paddingStart="8dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:layout_marginBottom="8dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="64dp"/>
 </RelativeLayout>
         <LinearLayout
         android:layout_width="fill_parent"

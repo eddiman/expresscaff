@@ -35,6 +35,12 @@
         <item>Caffe Latte</item>
     </string-array>
 
+    <string-array name="settings">
+        <item>Feedback</item>
+        <item>Privacy</item>
+        <item>About this project</item>
+    </string-array>
+
 
 
     <string name="title_activity_signup">Sign up</string>

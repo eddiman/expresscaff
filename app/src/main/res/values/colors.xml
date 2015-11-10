@@ -12,8 +12,8 @@
         http://www.google.com/design/spec/style/color.html#color-ui-color-palette
     -->
 
-    <color name="myPrimaryColor">#7b4c3b</color>
-    <color name="myPrimaryDarkColor">#5b382b</color>
+    <color name="myPrimaryColor">#7b513b</color>
+    <color name="myPrimaryDarkColor">#5b3c2b</color>
     <color name="myAccentColor">#d1a28b</color>
     <color name="myDrawerBackground">#fffcf8</color>
     <color name="myWindowBackground">#fffcf8</color>
@@ -21,22 +21,28 @@
     <color name="myNavigationColor">#000</color>
     <color name="background_material_light">#fffcf8</color>
     <color name="foreground_material_light">#fffcf8</color>
-    <color name="statusBarColor">#7b4c3b</color>
+    <color name="statusBarColor">#7b513b</color>
     <color name="background">#fffcf8</color>
 
 
     <!--brown palette-->
-    <color name="brownOne">#7b4c3b</color>
-    <color name="brownTwo">#835240</color>
-    <color name="brownThree">#8b5745</color>
-    <color name="brownFour">#915b49</color>
-    <color name="brownFive">#98614f</color>
-    <color name="brownSix">#9e6653</color>
-    <color name="brownSeven">#a46b57</color>
-    <color name="brownEight">#b47762</color>
+    <color name="brownOne">#7b513b</color>
+    <color name="brownTwo">#835540</color>
+    <color name="brownThree">#8b5b45</color>
+    <color name="brownFour">#916049</color>
+    <color name="brownFive">#98694f</color>
+    <color name="brownSix">#9e6d53</color>
+    <color name="brownSeven">#a47257</color>
+    <color name="brownEight">#b47c62</color>
     <color name="brownNine">#ba7e6a</color>
-    <color name="brownTen">#c48873</color>
-    <color name="brownReallyLight">#f7f4f3</color>
+    <color name="brownTen">#c48f73</color>
+    <color name="brownReallyLight">#f7f5f3</color>
+
+
+    <color name="listcolorOne">#f2ede7</color>
+    <color name="listcolorTwo">#f7f5f3</color>
+
+
 
     <color name="faded">#00000000</color>
     <drawable name="pressed_gray">#0c000000</drawable>
