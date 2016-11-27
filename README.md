@@ -1,6 +1,8 @@
 
 <h1> ExpressCaff</h1>
 
+<p>First Android project</p>
+
 <p>Student project with a group in autumn 2015. </p>
 <p>We were supposed to develop something using agile methods, we used ScrumBan. </p>
 
